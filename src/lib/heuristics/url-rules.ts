@@ -18,9 +18,9 @@ export const domainAgeYoung: Rule = {
     return { vars: { N: String(age) } };
   },
   copy: COPY['domain-age-young']!,
-  // NOTE: spec composition semantics are unresolved — heuristic-ruleset §5 says ALL
-  // listed rules must fire (AND), but the worked examples (§4 ex.3: young + payment → red)
-  // read as pairwise/ANY. Reconcile during the engine pass before calibration.
+  // Elevate to red if EITHER partner fires (OR-of-list; resolved 2026-06-23, ADR-005
+  // revision). In practice the live trigger is `payment-form-anomaly` — `tld-impersonation`
+  // is already base-red, so it's a redundant-but-harmless partner.
   elevateWhen: ['payment-form-anomaly', 'tld-impersonation'],
   knownFalsePositives: ['recently-launched small businesses', 'conference sites', 'newly-spun-off corporate domains'],
 };

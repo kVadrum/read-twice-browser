@@ -9,7 +9,10 @@ import type { EvaluationContext, Rule, RuleHit, Verdict } from './rule-types';
  *  - A rule that throws is logged and skipped — never a silent dropped verdict.
  *
  * Composition is one level deep (heuristic-ruleset §5): a rule with `elevateWhen`
- * becomes red iff every listed rule also fired. We do not chain elevations.
+ * becomes red iff ANY listed partner also fired (OR-of-list). We do not chain
+ * elevations. OR (not AND) is the resolution of the spec's composition ambiguity —
+ * it's the only reading under which the labeled worked examples come out right
+ * (e.g. §4 ex.3: young + payment → red). See ADR-005 revision (2026-06-23).
  */
 export function evaluatePage(
   rules: readonly Rule[],
@@ -33,8 +36,7 @@ export function evaluatePage(
   for (const { rule, vars } of fired.values()) {
     const elevated =
       rule.elevateWhen != null &&
-      rule.elevateWhen.length > 0 &&
-      rule.elevateWhen.every((id) => firedIds.has(id));
+      rule.elevateWhen.some((id) => firedIds.has(id));
     hits.push({
       ruleId: rule.id,
       severity: elevated ? 'red' : rule.severity,
