@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+*.zip
+
+# Local-only dev + agent files (workspace policy — never committed)
+CLAUDE.md
+STATE.md
+.claude/
+
+# Internal spec & design docs (workspace policy — never committed, never in history)
+[0-9][0-9]-*.md
+adrs/
+SPEC.md
+SPEC*.md
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor noise
+.DS_Store
+*.log
+*.tsbuildinfo

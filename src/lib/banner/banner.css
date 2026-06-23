@@ -1,0 +1,83 @@
+/*
+ * Banner styles — scoped to the closed Shadow DOM so page CSS can't reach in
+ * (architecture §1.4). Verdict palette is shared verbatim with the Read Twice
+ * mobile line (banner-ux-and-copy §2.2). These are locked design tokens, not
+ * choices to make here. The full visual build (motion, expand/collapse, eye mark)
+ * goes through the frontend-design skill.
+ */
+
+:host {
+  all: initial;
+}
+
+.rt-band {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 2147483647;
+  box-sizing: border-box;
+  padding: 14px 18px;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  border-bottom: 2px solid transparent;
+  animation: rt-slide-in 240ms ease-out;
+}
+
+/* Warm amber — "pause and consider". */
+.rt-yellow {
+  background: #f4b860;
+  color: #2a1f1a;
+  border-bottom-color: #d89b40;
+}
+
+/* Warm coral — "this is almost certainly a scam; close the tab". */
+.rt-red {
+  background: #e8654c;
+  color: #faf3ec;
+  border-bottom-color: #c7503a;
+}
+
+.rt-headline {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.rt-evidence,
+.rt-action {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.rt-action {
+  margin-top: 6px;
+}
+
+.rt-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* Both buttons carry the same visual weight — no premium framing (banner-ux-and-copy §6). */
+.rt-actions button {
+  font: inherit;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+@keyframes rt-slide-in {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-band { animation: rt-fade-in 140ms ease-out; }
+  @keyframes rt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+}
