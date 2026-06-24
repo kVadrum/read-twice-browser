@@ -1,5 +1,7 @@
 import type { Rule } from './rule-types';
 import { COPY } from '../banner/copy';
+import { ELEVATED_TLDS, BRAND_IMPERSONATION } from '../ruleset/lists';
+import { tldOf, isOnDomain, hostHasBrandToken } from './match';
 
 // URL / domain-shape rules (heuristic-ruleset §3.1).
 // `domain-age-young` is implemented as the reference rule that exercises the whole
@@ -39,7 +41,10 @@ export const tldElevatedRisk: Rule = {
   category: 'url',
   severity: 'yellow',
   modifier: true, // Never surfaces a banner alone — elevation/evidence modifier only.
-  evaluate: () => null, // TODO: match against lists/elevated-tlds.yaml.
+  evaluate(ctx) {
+    const tld = tldOf(ctx.features.host);
+    return ELEVATED_TLDS.includes(tld) ? { vars: { tld } } : null;
+  },
   copy: COPY['tld-elevated-risk']!,
 };
 
@@ -47,8 +52,21 @@ export const tldImpersonation: Rule = {
   id: 'tld-impersonation',
   category: 'url',
   severity: 'red',
-  evaluate: () => null, // TODO: brand keyword in host AND host not in canonical allow-list.
+  evaluate(ctx) {
+    const host = ctx.features.host;
+    for (const brand of BRAND_IMPERSONATION) {
+      // Brand token in the host, but the host is NOT on the brand's real domain.
+      if (hostHasBrandToken(host, brand.keyword) && !brand.canonical.some((c) => isOnDomain(host, c))) {
+        return { vars: { brand: brand.display, canonical: brand.canonical[0]! } };
+      }
+    }
+    return null;
+  },
   copy: COPY['tld-impersonation']!,
+  // Known FP surface: legit third parties with a brand token in their domain (resellers,
+  // fan sites). Spec's refinement — pass them unless combined with payment/scam-language —
+  // is a calibration follow-up once the corpus exists (heuristic-ruleset §3.1).
+  knownFalsePositives: ['brand-authorized resellers', 'fan/community sites with a brand token'],
 };
 
 export const urlRules: readonly Rule[] = [
