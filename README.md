@@ -56,7 +56,15 @@ a scam we missed.
 
 ## License
 
-Code is [MIT](LICENSE). The **Read Twice** name, wordmark, logo, and verdict colour
-palette are trademarks of KeMeK Network / kVadrum and are **not** covered by the MIT
-grant — fork the code freely, but ship it under your own name. See the trademark
-notice in [LICENSE](LICENSE).
+[MIT](./LICENSE). KeMeK Network © 2026 — fork and reuse the code freely.
+
+The detection ruleset (patterns, phrase lists, fixture corpus) is being open-sourced
+too; its canonical home is the companion repo [`read-twice-rules`][rules] under a
+Creative Commons licence. The copy bundled in this repo is MIT until that repo is stood up.
+
+### Trademarks
+
+The **Read Twice** name, wordmark, and verdict colour palette (warm coral, warm amber,
+deep moss) are trademarks and trade dress of KeMeK Network. They are **not** covered by
+the MIT grant. No rights to use the name, mark, or palette are granted by this repository
+— independent forks must replace the brand name and palette with their own.
