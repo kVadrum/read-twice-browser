@@ -10,4 +10,4 @@ the v0.1 rules currently live as TypeScript modules under `src/lib/heuristics/`.
 the companion repo is stood up, the sync/compile step populates this directory and the
 loader (`src/lib/ruleset/loader.ts`) reads from here instead.
 
-[rules]: https://github.com/kvadrum/read-twice-rules
+[rules]: https://github.com/kVadrum/read-twice-rules

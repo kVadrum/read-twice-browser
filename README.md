@@ -26,8 +26,10 @@ accounts, no AI reading your pages.
 
 ## Status
 
-Pre-v0.1. This repository is being scaffolded; the detection engine and banner are
-under active construction. Not yet published to the Chrome Web Store or Firefox Add-ons.
+**v0.1.0, in active development — built in the open.** The heuristic engine is being
+implemented rule by rule; the banner and the remaining rules are under construction.
+Not yet published to the Chrome Web Store or Firefox Add-ons. Expect rough edges — and
+feel free to watch the work happen on `dev`.
 
 ## Development
 
@@ -50,7 +52,7 @@ Commons license. They're community-contributable and independently auditable; th
 extension bundles a copy at build time. See that repo to propose a new rule or report
 a scam we missed.
 
-[rules]: https://github.com/kvadrum/read-twice-rules
+[rules]: https://github.com/kVadrum/read-twice-rules
 
 ## License
 
