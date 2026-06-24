@@ -68,6 +68,14 @@ describe('evaluatePage modifiers', () => {
     expect(v.severity).toBe('yellow');
     expect(v.hits.map((h) => h.ruleId).sort()).toEqual(['a', 'm']);
   });
+
+  it('does not let a modifier elevate another rule to red', () => {
+    // `a` lists modifier `m` as an elevation partner; both fire. `m` is a modifier, so
+    // it must not push the verdict to red on its own.
+    const rules = [rule('a', 'yellow', { elevateWhen: ['m'] }), rule('m', 'yellow', { modifier: true })];
+    const v = evaluatePage(rules, ctxFiring(['a', 'm']));
+    expect(v.severity).toBe('yellow');
+  });
 });
 
 describe('evaluatePage robustness + ordering', () => {

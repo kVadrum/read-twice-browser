@@ -6,6 +6,9 @@ import type { PageFeatures, FormFeature } from '../lib/heuristics/rule-types';
 const BODY_EXCERPT_LIMIT = 16 * 1024;
 
 // US/CA phone numbers in E.164 and common display variants.
+// CAVEAT (calibrate during the phone-number-impersonation rule pass): this is
+// unanchored, so it also matches 10-digit runs inside longer numeric strings
+// (order/tracking numbers). Tighten with boundary guards against the corpus then.
 const PHONE_RE = /(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
 
 // Input-name fragments that indicate a payment/PII field. Interim list — the real

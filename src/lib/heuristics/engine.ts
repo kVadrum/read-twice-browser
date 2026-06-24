@@ -32,11 +32,14 @@ export function evaluatePage(
 
   // Pass 2: resolve effective severity (apply one-level elevation).
   const firedIds = new Set(fired.keys());
+  const modifierIds = new Set(rules.filter((r) => r.modifier).map((r) => r.id));
   const hits: RuleHit[] = [];
   for (const { rule, vars } of fired.values()) {
+    // Elevate to red if any NON-modifier partner also fired. Modifiers add evidence
+    // but must never push a verdict to red — including by elevating someone else.
     const elevated =
       rule.elevateWhen != null &&
-      rule.elevateWhen.some((id) => firedIds.has(id));
+      rule.elevateWhen.some((id) => firedIds.has(id) && !modifierIds.has(id));
     hits.push({
       ruleId: rule.id,
       severity: elevated ? 'red' : rule.severity,
@@ -46,7 +49,7 @@ export function evaluatePage(
 
   // Modifier-only rules add evidence but never surface a banner alone. If the only
   // things that fired are modifiers, there is no banner.
-  const substantive = hits.filter((h) => !isModifier(rules, h.ruleId));
+  const substantive = hits.filter((h) => !modifierIds.has(h.ruleId));
   if (substantive.length === 0) return { severity: 'none', hits: [] };
 
   const severity: Verdict['severity'] = substantive.some((h) => h.severity === 'red')
@@ -56,10 +59,6 @@ export function evaluatePage(
   // Order hits by severity (red first) so the banner's headline is the strongest hit.
   hits.sort((a, b) => severityRank(b.severity) - severityRank(a.severity));
   return { severity, hits };
-}
-
-function isModifier(rules: readonly Rule[], ruleId: string): boolean {
-  return rules.find((r) => r.id === ruleId)?.modifier === true;
 }
 
 function severityRank(s: RuleHit['severity']): number {

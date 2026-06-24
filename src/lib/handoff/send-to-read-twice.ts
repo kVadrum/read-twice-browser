@@ -47,13 +47,27 @@ export function decodePayload(encoded: string): HandoffPayload {
   return JSON.parse(json) as HandoffPayload;
 }
 
-/** Builds the full hand-off URL. Throws if it would exceed HANDOFF_URL_LIMIT. */
+/**
+ * Builds the full hand-off URL, kept under HANDOFF_URL_LIMIT. The page's own `url`
+ * is essential for routing on the landing page, so the droppable field under budget
+ * pressure is the `excerpt` (which is only a hint for the deeper analysis). If even
+ * the excerpt-less URL exceeds the limit — a pathological page URL — we throw, and
+ * the caller degrades to opening the bare landing page (see content/render.ts).
+ */
 export function buildHandoffUrl(input: HandoffInput): string {
-  const url = `${HANDOFF_BASE_URL}?via=ext&payload=${encodePayload(buildHandoffPayload(input))}`;
-  if (url.length > HANDOFF_URL_LIMIT) {
-    throw new RangeError(`hand-off URL exceeds ${HANDOFF_URL_LIMIT} chars (${url.length})`);
-  }
-  return url;
+  const full = assembleUrl(buildHandoffPayload(input));
+  if (full.length <= HANDOFF_URL_LIMIT) return full;
+
+  const trimmed = assembleUrl(buildHandoffPayload({ ...input, excerpt: '' }));
+  if (trimmed.length <= HANDOFF_URL_LIMIT) return trimmed;
+
+  throw new RangeError(
+    `hand-off URL exceeds ${HANDOFF_URL_LIMIT} chars (${trimmed.length}) even without the excerpt`,
+  );
+}
+
+function assembleUrl(payload: HandoffPayload): string {
+  return `${HANDOFF_BASE_URL}?via=ext&payload=${encodePayload(payload)}`;
 }
 
 function bytesToBase64Url(bytes: Uint8Array): string {

@@ -45,7 +45,21 @@ describe('send-to-read-twice payload', () => {
     expect(decodePayload(encoded).v).toBe(1);
   });
 
-  it('throws rather than emit an over-long url', () => {
+  it('drops the excerpt (not the routing url) to stay under budget', () => {
+    const longUrl = 'https://shop.example/search?q=' + 'q'.repeat(5000); // big but not pathological
+    const url = buildHandoffUrl({
+      url: longUrl,
+      rulesFired: ['payment-form-anomaly'],
+      excerpt: 'z'.repeat(2048),
+      timestamp: TS,
+    });
+    expect(url.length).toBeLessThanOrEqual(HANDOFF_URL_LIMIT);
+    const decoded = decodePayload(url.split('payload=')[1]!);
+    expect(decoded.url).toBe(longUrl); // url preserved for routing
+    expect(decoded.excerpt).toBe(''); // excerpt sacrificed
+  });
+
+  it('throws only when even the excerpt-less url exceeds the limit', () => {
     expect(() =>
       buildHandoffUrl({ url: 'https://a.example/' + 'q'.repeat(HANDOFF_URL_LIMIT), rulesFired: [], excerpt: '', timestamp: TS }),
     ).toThrow(RangeError);
