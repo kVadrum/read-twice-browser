@@ -120,3 +120,12 @@ export const TECH_SUPPORT_BRANDS: readonly SupportBrand[] = [
   { keywords: ['McAfee Support'], display: 'McAfee', canonical: ['mcafee.com'] },
   { keywords: ['Geek Squad'], display: 'Geek Squad', canonical: ['bestbuy.com', 'geeksquad.com'] },
 ];
+
+/** `payment-form-anomaly`: a payment form posting cross-domain to a NON-processor is the
+ *  anomaly. These are the expected, legitimate processor destinations. */
+export const PAYMENT_PROCESSORS_ALLOW: readonly string[] = [
+  'stripe.com', 'braintreegateway.com', 'braintree-api.com', 'paypal.com', 'paypalobjects.com',
+  'adyen.com', 'squareup.com', 'square.com', 'checkout.com', 'authorize.net', 'worldpay.com',
+  '2checkout.com', 'klarna.com', 'affirm.com', 'razorpay.com', 'paddle.com', 'amazonpay.com',
+  'shopify.com', 'shopifycs.com',
+];

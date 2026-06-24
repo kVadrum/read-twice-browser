@@ -16,6 +16,13 @@ export function isOnDomain(host: string, domain: string): boolean {
   return h === d || h.endsWith('.' + d);
 }
 
+/** Approx eTLD+1 = last two dot-labels, lowercased. Fine for single-suffix TLDs; a
+ *  public-suffix list refines multi-part suffixes (.co.uk) later. Used to tell
+ *  same-site (cross-subdomain) form posts from genuinely cross-domain ones. */
+export function registrableDomain(host: string): string {
+  return host.toLowerCase().split('.').slice(-2).join('.');
+}
+
 /**
  * True if a hyphen/underscore/dot-delimited token of the host exactly equals `brand`.
  * Token equality (not substring) is the FP guard: `chase-verify.com` matches "chase",

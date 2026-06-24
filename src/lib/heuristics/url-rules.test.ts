@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { domainAgeYoung, tldElevatedRisk, tldImpersonation } from './url-rules';
+import { domainAgeYoung, tldElevatedRisk, tldImpersonation, domainCharsetMixed } from './url-rules';
 import type { EvaluationContext, PageFeatures, RdapResult } from './rule-types';
 
 function ctx(host: string, over: Partial<PageFeatures> = {}, rdap: RdapResult | null = null): EvaluationContext {
@@ -58,5 +58,20 @@ describe('tld-impersonation', () => {
   it('does not false-match a brand token buried inside a longer word', () => {
     expect(tldImpersonation.evaluate(ctx('purchase.com'))).toBeNull(); // not "chase"
     expect(tldImpersonation.evaluate(ctx('groups.io'))).toBeNull(); // not "ups"
+  });
+});
+
+describe('domain-charset-mixed', () => {
+  it('fires on a real IDN homoglyph (xn-- produced by the URL parser)', () => {
+    // Cyrillic 'а' (U+0430) standing in for Latin 'a' — the URL parser punycodes it.
+    const xn = new URL('https://ch' + String.fromCharCode(0x0430) + 'se.example').hostname;
+    const hit = domainCharsetMixed.evaluate(ctx(xn));
+    expect(hit).not.toBeNull();
+    expect(hit!.vars.punycode).toBe(xn.toLowerCase());
+    expect(hit!.vars.display).toContain('ch');
+  });
+  it('does not fire on a plain ASCII host or a legit single-script IDN', () => {
+    expect(domainCharsetMixed.evaluate(ctx('chase.com'))).toBeNull();
+    expect(domainCharsetMixed.evaluate(ctx('xn--bcher-kva.com'))).toBeNull(); // bücher.com
   });
 });

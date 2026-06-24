@@ -2,6 +2,7 @@ import type { Rule } from './rule-types';
 import { COPY } from '../banner/copy';
 import { ELEVATED_TLDS, BRAND_IMPERSONATION } from '../ruleset/lists';
 import { tldOf, isOnDomain, hostHasBrandToken } from './match';
+import { isMixedScriptHost, decodeHost } from './homoglyph';
 
 // URL / domain-shape rules (heuristic-ruleset §3.1).
 // `domain-age-young` is implemented as the reference rule that exercises the whole
@@ -31,9 +32,15 @@ export const domainCharsetMixed: Rule = {
   id: 'domain-charset-mixed',
   category: 'url',
   severity: 'yellow',
-  evaluate: () => null, // TODO: homoglyph detection on the punycode-decoded hostname.
+  evaluate(ctx) {
+    const host = ctx.features.host;
+    if (!isMixedScriptHost(host)) return null;
+    // display = the deceptive Unicode look; punycode = the address as actually stored.
+    return { vars: { display: decodeHost(host), punycode: host.toLowerCase() } };
+  },
   copy: COPY['domain-charset-mixed']!,
   elevateWhen: ['payment-form-anomaly'],
+  knownFalsePositives: ['legitimately single-script international domains (excluded — only Latin+Cyrillic/Greek fires)'],
 };
 
 export const tldElevatedRisk: Rule = {

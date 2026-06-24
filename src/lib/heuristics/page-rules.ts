@@ -1,17 +1,31 @@
 import type { Rule } from './rule-types';
 import { COPY } from '../banner/copy';
+import { PAYMENT_PROCESSORS_ALLOW } from '../ruleset/lists';
+import { isOnDomain, registrableDomain } from './match';
 
-// Page-shape rules (heuristic-ruleset §3.2). Skeletons pending the v0.1 engine pass.
+// Page-shape rules (heuristic-ruleset §3.2).
 
 export const paymentFormAnomaly: Rule = {
   id: 'payment-form-anomaly',
   category: 'page',
   severity: 'yellow',
-  // TODO: payment field present AND (cross-eTLD+1 action not in processor allow-list
-  //       OR declared brand ≠ action target).
-  evaluate: () => null,
+  evaluate(ctx) {
+    const pageReg = registrableDomain(ctx.features.host);
+    for (const form of ctx.features.forms) {
+      if (!form.hasPaymentField || form.actionHost == null) continue;
+      // Same registrable domain → normal (cross-subdomain checkout). Not an anomaly.
+      if (registrableDomain(form.actionHost) === pageReg) continue;
+      // A known payment processor is the expected cross-domain destination.
+      if (PAYMENT_PROCESSORS_ALLOW.some((p) => isOnDomain(form.actionHost!, p))) continue;
+      return { vars: { actionHost: form.actionHost } };
+    }
+    return null;
+  },
   copy: COPY['payment-form-anomaly']!,
+  // The brand-mismatch branch (page brand ≠ action target) is deferred — it needs
+  // brand-mention extraction (extract.ts brandMentions is not yet populated).
   elevateWhen: ['domain-age-young', 'tld-impersonation', 'scam-language-pressure'],
+  knownFalsePositives: ['legit sites using a regional processor not in the allow-list'],
 };
 
 export const redirectChainLong: Rule = {
