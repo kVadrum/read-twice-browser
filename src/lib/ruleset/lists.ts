@@ -76,3 +76,47 @@ export const NEWS_DOMAINS_ALLOW: readonly string[] = [
   'wsj.com', 'npr.org', 'theguardian.com', 'cnn.com', 'forbes.com', 'bloomberg.com',
   'krebsonsecurity.com', 'aarp.org', 'ftc.gov',
 ];
+
+export interface AgencyImpersonation {
+  /** Agency names/acronyms, matched as whole words/phrases in page text. */
+  keywords: readonly string[];
+  display: string;
+  /** The agency's real domain(s). */
+  canonical: readonly string[];
+}
+
+/** `government-impersonation`: agency named in page text + a payment ask, off the real domain. */
+export const GOVERNMENT_AGENCIES: readonly AgencyImpersonation[] = [
+  { keywords: ['IRS', 'Internal Revenue Service'], display: 'IRS', canonical: ['irs.gov'] },
+  { keywords: ['SSA', 'Social Security Administration'], display: 'Social Security', canonical: ['ssa.gov'] },
+  { keywords: ['USPS', 'United States Postal Service'], display: 'USPS', canonical: ['usps.com'] },
+  { keywords: ['Medicare'], display: 'Medicare', canonical: ['medicare.gov'] },
+  { keywords: ['CRA', 'Canada Revenue Agency'], display: 'CRA', canonical: ['canada.ca', 'cra-arc.gc.ca'] },
+  { keywords: ['HMRC', "His Majesty's Revenue and Customs", "Her Majesty's Revenue and Customs"], display: 'HMRC', canonical: ['gov.uk'] },
+];
+
+/** Companies that legitimately work with agency data — never government impersonation. */
+export const TAX_PREP_ALLOW: readonly string[] = [
+  'turbotax.com', 'intuit.com', 'hrblock.com', 'freetaxusa.com', 'taxact.com', 'creditkarma.com',
+];
+
+/** Specific payment-collection CTAs (not bare "pay") for the government-impersonation element. */
+export const PAY_CTA_PHRASES: readonly string[] = [
+  'click here to pay', 'pay now', 'make a payment', 'submit payment', 'pay your balance', 'pay the fee',
+];
+
+export interface SupportBrand {
+  /** Specific support phrasings ("Microsoft Support"), not the bare brand name. */
+  keywords: readonly string[];
+  display: string;
+  canonical: readonly string[];
+}
+
+/** `tech-support-impersonation`: a fake support page (brand-support claim near the top + a number to call). */
+export const TECH_SUPPORT_BRANDS: readonly SupportBrand[] = [
+  { keywords: ['Microsoft Support', 'Microsoft Customer Service', 'Windows Support'], display: 'Microsoft', canonical: ['microsoft.com'] },
+  { keywords: ['Apple Support', 'AppleCare', 'Apple Care'], display: 'Apple', canonical: ['apple.com'] },
+  { keywords: ['Norton Support', 'Norton Customer Service'], display: 'Norton', canonical: ['norton.com'] },
+  { keywords: ['McAfee Support'], display: 'McAfee', canonical: ['mcafee.com'] },
+  { keywords: ['Geek Squad'], display: 'Geek Squad', canonical: ['bestbuy.com', 'geeksquad.com'] },
+];

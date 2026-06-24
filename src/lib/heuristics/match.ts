@@ -33,3 +33,21 @@ export function hostHasBrandToken(host: string, brand: string): boolean {
 export function textHasPhrase(text: string, phrase: string): boolean {
   return text.toLowerCase().includes(phrase.toLowerCase());
 }
+
+/** Case-insensitive whole-word/phrase match with word boundaries — for acronyms ("IRS")
+ *  and names ("Internal Revenue Service") so they don't match inside longer words. */
+export function textHasWord(text: string, word: string): boolean {
+  return new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i').test(text);
+}
+
+/** True if `phrase` occurs within the top `fraction` of the text — approximates "near the
+ *  top of the page" (the headline area), with a floor so short pages still match a header. */
+export function textHasPhraseNearTop(text: string, phrase: string, fraction = 0.3): boolean {
+  const idx = text.toLowerCase().indexOf(phrase.toLowerCase());
+  if (idx === -1) return false;
+  return idx < Math.max(1500, Math.floor(text.length * fraction));
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
