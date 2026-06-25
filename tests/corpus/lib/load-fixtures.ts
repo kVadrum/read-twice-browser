@@ -19,9 +19,25 @@ export function loadFixtures(): LoadedFixture[] {
     } catch {
       continue; // directory not created yet
     }
-    for (const file of entries.filter((f) => f.endsWith('.yaml')).sort()) {
-      const base = file.slice(0, -'.yaml'.length);
-      const meta = parse(readFileSync(join(dir, file), 'utf8')) as FixtureMeta;
+    const bases = entries.filter((f) => f.endsWith('.yaml')).map((f) => f.slice(0, -'.yaml'.length));
+    const baseSet = new Set(bases);
+
+    // Orphan-HTML guard: an .html with no .yaml sibling is never loaded, so it silently
+    // never enters the truth set — a scam that looks "caught" because it was never tested.
+    // That is the false-confidence failure the corpus exists to prevent, so fail loudly.
+    for (const f of entries) {
+      if (f.endsWith('.html') && !baseSet.has(f.slice(0, -'.html'.length))) {
+        throw new Error(`Fixture ${sub}/${f} has no .yaml sibling — it would silently never be tested.`);
+      }
+    }
+
+    for (const base of bases.sort()) {
+      const meta = parse(readFileSync(join(dir, `${base}.yaml`), 'utf8')) as FixtureMeta;
+      // The report and assertions key on meta.id; pairing is by filename. Divergence would
+      // mislabel results with no detection — pin them together.
+      if (meta.id !== base) {
+        throw new Error(`Fixture ${sub}/${base}.yaml has id "${meta.id}"; it must match the filename "${base}".`);
+      }
       const html = readFileSync(join(dir, `${base}.html`), 'utf8');
       out.push({ meta, html });
     }
