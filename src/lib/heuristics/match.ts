@@ -1,12 +1,19 @@
 // Pure matchers shared by the rules. Kept tiny and side-effect-free so they're
 // trivially testable and the rules read declaratively.
+//
+// `tldOf` / `registrableDomain` resolve the real public suffix via the bundled Public
+// Suffix List (tldts), so multi-part suffixes are handled correctly — `attacker.co.uk`
+// and `shop.example.co.uk` are NOT the same registrable domain. We use tldts's default
+// ICANN-only section: private suffixes (github.io, herokuapp.com) are deliberately NOT
+// treated as registrable boundaries, so two subdomains of a shared host read same-site
+// — the precision-first choice (no payment-anomaly false-positives on shared hosting).
+import { getDomain, getPublicSuffix } from 'tldts';
 
-/** Last dot-label of a hostname, lowercased. Approximates the TLD — fine for the
- *  single-suffix TLDs (.com/.gov/.top) the v0.1 lists use; a public-suffix list
- *  replaces this for multi-part suffixes (.co.uk) in a later pass. */
+/** The host's public suffix (eTLD) per the PSL — "co.uk", "top", "gov". tldts returns
+ *  the trailing label even for unlisted TLDs; null only for IPs / empty, where we fall
+ *  back to the last label. */
 export function tldOf(host: string): string {
-  const labels = host.toLowerCase().split('.');
-  return labels[labels.length - 1] ?? '';
+  return getPublicSuffix(host) ?? (host.toLowerCase().split('.').pop() ?? '');
 }
 
 /** True if `host` IS `domain` or a subdomain of it — i.e. legitimately on that domain. */
@@ -16,11 +23,11 @@ export function isOnDomain(host: string, domain: string): boolean {
   return h === d || h.endsWith('.' + d);
 }
 
-/** Approx eTLD+1 = last two dot-labels, lowercased. Fine for single-suffix TLDs; a
- *  public-suffix list refines multi-part suffixes (.co.uk) later. Used to tell
- *  same-site (cross-subdomain) form posts from genuinely cross-domain ones. */
+/** The host's registrable domain (eTLD+1) per the PSL — "example.co.uk". Tells a same-site
+ *  (cross-subdomain) form post from a genuinely cross-domain one. null only for IPs / empty,
+ *  where we fall back to the whole host so distinct IPs stay distinct (never falsely same-site). */
 export function registrableDomain(host: string): string {
-  return host.toLowerCase().split('.').slice(-2).join('.');
+  return getDomain(host) ?? host.toLowerCase();
 }
 
 /**

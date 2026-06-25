@@ -1,6 +1,6 @@
 {
   "name": "read-twice-browser",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -15,7 +15,8 @@
     "gen:icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
-    "preact": "^10.29.0"
+    "preact": "^10.29.0",
+    "tldts": "^7.4.4"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.7.0",
