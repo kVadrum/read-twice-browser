@@ -1,0 +1,10 @@
+id: saas-renewal-notice
+label: legit
+expected_severity: none
+domain: cloudtools-app.example
+notes: >
+  Benign SaaS renewal copy ("subscription will renew automatically") that is close to, but not,
+  the exact urgency phrase ("your subscription will be automatically renewed unless"). Validates the
+  exact-phrase discipline — paraphrases of a listed phrase must not trip scam-language-urgent.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

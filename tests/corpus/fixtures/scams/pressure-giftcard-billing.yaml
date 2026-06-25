@@ -1,0 +1,11 @@
+id: pressure-giftcard-billing
+label: scam
+expected_severity: red
+expected_rules:
+  - scam-language-pressure
+domain: account-billing-resolve.example
+notes: >
+  Gift-card payment demand ("pay with gift cards", "gift cards only") — pressure phrases with
+  no legitimate billing use. No brand token, isolates scam-language-pressure.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

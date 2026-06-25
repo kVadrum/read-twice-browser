@@ -1,0 +1,10 @@
+id: utility-coned-billpay
+label: legit
+expected_severity: none
+domain: www.coned.com
+notes: >
+  A legitimate utility bill-pay page with payment CTAs ("pay your balance", "make a payment",
+  "pay now") and a card field — but no government agency named. Validates government-impersonation's
+  conservatism: a payment ask without an agency keyword stays silent. Form is same-origin (no anomaly).
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

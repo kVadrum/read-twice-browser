@@ -1,0 +1,10 @@
+id: bank-bofa-subdomain-checkout
+label: legit
+expected_severity: none
+domain: secure.bankofamerica.com
+notes: >
+  Cross-SUBDOMAIN card form (secure.bankofamerica.com → payments.bankofamerica.com). Same
+  registrable domain, so payment-form-anomaly correctly treats it as a normal checkout — directly
+  exercises the tldts eTLD+1 resolution (the v0.2.2 PSL fix). Brand token on bankofamerica.com (suppressed).
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

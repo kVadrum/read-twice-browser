@@ -1,0 +1,10 @@
+id: techsupport-apple-real
+label: legit
+expected_severity: none
+domain: support.apple.com
+notes: >
+  The real Apple support page: "Apple Support" near the top AND a phone number — every
+  tech-support-impersonation precondition except the canonical check. Host on apple.com suppresses it.
+  The tech-support analogue of the IRS red-FP trap.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

@@ -1,0 +1,9 @@
+id: taxprep-turbotax
+label: legit
+expected_severity: none
+domain: turbotax.intuit.com
+notes: >
+  Legitimate tax-prep that names the IRS and asks for payment — would trip government-impersonation
+  but for the TAX_PREP_ALLOW list (intuit.com). Form is same-origin, so no payment-form-anomaly.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

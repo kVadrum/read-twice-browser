@@ -1,0 +1,11 @@
+id: pressure-courier-crypto
+label: scam
+expected_severity: red
+expected_rules:
+  - scam-language-pressure
+domain: secure-asset-recovery.example
+notes: >
+  Recovery-scam pressure language ("we will send a courier", "do not tell anyone") with
+  no legitimate use in context — isolates scam-language-pressure (red).
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

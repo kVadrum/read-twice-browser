@@ -1,0 +1,12 @@
+id: pressure-ssa-suspended
+label: scam
+expected_severity: red
+expected_rules:
+  - scam-language-pressure
+  - tld-impersonation
+domain: ssa-benefits-review.example
+notes: >
+  SSN-suspension call scam. Pressure phrases ("...has been suspended", "do not hang up") plus
+  the brand token "ssa" off ssa.gov. No payment ask, so government-impersonation stays silent.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

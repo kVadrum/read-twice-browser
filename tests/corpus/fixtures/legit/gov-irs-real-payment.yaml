@@ -1,0 +1,10 @@
+id: gov-irs-real-payment
+label: legit
+expected_severity: none
+domain: www.irs.gov
+notes: >
+  The existential red-FP trap: the real IRS, naming itself, with an SSN field and a payment CTA —
+  every government-impersonation precondition EXCEPT the canonical check. Host on irs.gov suppresses it.
+  If this ever reds, the canonical allow-list has broken.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

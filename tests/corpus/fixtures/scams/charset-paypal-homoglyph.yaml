@@ -1,0 +1,13 @@
+id: charset-paypal-homoglyph
+label: scam
+expected_severity: red
+expected_rules:
+  - domain-charset-mixed
+  - payment-form-anomaly
+domain: xn--pypal-4ve.example
+notes: >
+  IDN homoglyph. The punycode host decodes to "pаypal.example" with a Cyrillic 'а'
+  (Latin+Cyrillic mix → domain-charset-mixed), elevated to red by a cross-domain card form.
+  The host is punycode, so the brand-token rule does not fire — this isolates charset detection.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

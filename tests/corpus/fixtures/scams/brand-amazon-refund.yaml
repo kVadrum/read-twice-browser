@@ -1,0 +1,14 @@
+id: brand-amazon-refund
+label: scam
+expected_severity: red
+expected_rules:
+  - tld-impersonation
+  - domain-age-young
+  - scam-language-urgent
+domain: amazon-refund-center.example
+domain_age_days: 30
+notes: >
+  Amazon refund phish. Brand token "amazon" off amazon.com (tld-impersonation, red) elevates the
+  30-day-old domain to red, plus an urgency phrase. No payment form — tests elevation via tld, not payment.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

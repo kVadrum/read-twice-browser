@@ -1,0 +1,11 @@
+id: newbiz-bakery-young
+label: legit
+expected_severity: yellow
+domain: rosegold-bakery-pdx.example
+domain_age_days: 21
+notes: >
+  KNOWN yellow false positive (testing-strategy §2.1 long-tail trap): a legitimate new small
+  business on a 21-day-old domain trips domain-age-young alone. Tolerated at yellow — this is the
+  cost the rule knowingly accepts. Documents current behavior; counts toward the legit FP rate.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

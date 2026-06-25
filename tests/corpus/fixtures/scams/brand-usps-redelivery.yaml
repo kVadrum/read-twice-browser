@@ -1,0 +1,16 @@
+id: brand-usps-redelivery
+label: scam
+expected_severity: red
+expected_rules:
+  - tld-impersonation
+  - payment-form-anomaly
+  - government-impersonation
+  - domain-age-young
+domain: usps-tracking-redelivery.example
+domain_age_days: 4
+notes: >
+  USPS redelivery-fee smish landing — a dense multi-signal scam: brand token "usps"
+  (tld-impersonation), young domain, cross-domain card form (payment-form-anomaly), USPS named
+  with a payment ask (government-impersonation), and an urgency phrase. Realistic stacked case.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

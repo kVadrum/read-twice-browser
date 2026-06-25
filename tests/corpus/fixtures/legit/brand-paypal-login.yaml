@@ -1,0 +1,9 @@
+id: brand-paypal-login
+label: legit
+expected_severity: none
+domain: www.paypal.com
+notes: >
+  Real PayPal login. Brand token "paypal" present but host is on paypal.com — tld-impersonation
+  suppressed. Login form has no payment field. A second brand-canonical guard alongside Chase.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

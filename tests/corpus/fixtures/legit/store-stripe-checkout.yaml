@@ -1,0 +1,9 @@
+id: store-stripe-checkout
+label: legit
+expected_severity: none
+domain: goodgoods-store.example
+notes: >
+  Legit shop whose card form posts cross-domain to checkout.stripe.com. payment-form-anomaly is
+  suppressed because stripe.com is on PAYMENT_PROCESSORS_ALLOW — validates the processor allow-list.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

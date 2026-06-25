@@ -1,0 +1,11 @@
+id: payment-anomaly-checkout
+label: scam
+expected_severity: yellow
+expected_rules:
+  - payment-form-anomaly
+domain: mega-deals-outlet.example
+notes: >
+  Card form posting cross-domain to a non-processor (pay-harvest.example). No brand,
+  age, or scam-language signal, so it stays yellow — isolates payment-form-anomaly.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

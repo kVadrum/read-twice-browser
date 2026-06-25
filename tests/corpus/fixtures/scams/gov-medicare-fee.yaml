@@ -1,0 +1,12 @@
+id: gov-medicare-fee
+label: scam
+expected_severity: red
+expected_rules:
+  - government-impersonation
+  - tld-impersonation
+domain: medicare-enrollment-2026.example
+notes: >
+  Medicare impersonation: agency named + payment ask off medicare.gov (government-impersonation),
+  and the brand token "medicare" in the host (tld-impersonation).
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

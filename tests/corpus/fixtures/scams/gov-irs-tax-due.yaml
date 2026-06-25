@@ -1,0 +1,11 @@
+id: gov-irs-tax-due
+label: scam
+expected_severity: red
+expected_rules:
+  - government-impersonation
+domain: federal-tax-settlement.example
+notes: >
+  IRS impersonation with a payment ask (SSN field + "pay your balance" / "submit payment").
+  The host carries no brand token, isolating government-impersonation from tld-impersonation.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

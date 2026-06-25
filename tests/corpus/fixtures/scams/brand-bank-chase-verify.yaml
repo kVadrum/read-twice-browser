@@ -1,0 +1,15 @@
+id: brand-bank-chase-verify
+label: scam
+expected_severity: red
+expected_rules:
+  - tld-impersonation
+  - domain-age-young
+  - payment-form-anomaly
+  - scam-language-urgent
+domain: chase-account-verify.example
+domain_age_days: 6
+notes: >
+  Bank-credential phish. Brand token "chase" off chase.com (tld-impersonation, red),
+  6-day-old domain elevated by a cross-domain card-collecting form, plus an urgency phrase.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25

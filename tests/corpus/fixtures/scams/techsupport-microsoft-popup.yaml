@@ -1,0 +1,12 @@
+id: techsupport-microsoft-popup
+label: scam
+expected_severity: red
+expected_rules:
+  - tech-support-impersonation
+  - scam-language-urgent
+domain: windows-defender-alert.example
+notes: >
+  Fake support pop-up: "Microsoft Support" near the top + a call number off microsoft.com
+  (tech-support-impersonation), with an urgency phrase ("your computer is infected").
+source: synthetic — authored for the seed corpus
+captured_at: 2026-06-25
