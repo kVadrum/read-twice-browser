@@ -8,9 +8,9 @@ The fixture corpus is the truth set the heuristic engine is calibrated against
 pnpm test:fixtures
 ```
 
-> **Poseidon:** vitest 4 needs the rolldown-wasi shim here, e.g.
-> `NAPI_RS_NATIVE_LIBRARY_PATH=… pnpm test:fixtures` (see the device note). Other
-> machines / CI run it plain.
+> **If vitest 4 segfaults at startup** (seen on some Linux hosts), use the
+> rolldown-wasi shim, e.g. `NAPI_RS_NATIVE_LIBRARY_PATH=… pnpm test:fixtures`.
+> Other machines and CI run it plain.
 
 ## What it does
 

@@ -12,5 +12,5 @@ land with the engine pass:
   (yellow) / ≤1% (red).
 - `golden/` — Playwright golden-image tests for the banner UI.
 
-> **Poseidon:** Vitest 4 segfaults on this box without the rolldown-wasi shim. Prefix
-> test runs with `NAPI_RS_NATIVE_LIBRARY_PATH=…/rolldown-binding.wasi.cjs` (device notes).
+> **If Vitest 4 segfaults at startup** (seen on some Linux hosts), prefix test runs
+> with `NAPI_RS_NATIVE_LIBRARY_PATH=…/rolldown-binding.wasi.cjs`.

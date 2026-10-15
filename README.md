@@ -41,8 +41,9 @@ pnpm test     # unit tests (Vitest)
 pnpm typecheck
 ```
 
-> **Poseidon note:** running `pnpm test` here needs the rolldown-wasi shim —
-> see the device notes for the `NAPI_RS_NATIVE_LIBRARY_PATH` workaround.
+> **If `pnpm test` segfaults before any test runs**, Vitest 4's native rolldown
+> binding is the cause on some Linux hosts; the rolldown-wasi shim works around
+> it (`NAPI_RS_NATIVE_LIBRARY_PATH=…/rolldown-binding.wasi.cjs pnpm test`).
 
 ## The detection rules live in a separate repo
 
