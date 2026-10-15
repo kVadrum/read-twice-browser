@@ -62,9 +62,8 @@ The detection ruleset (patterns, phrase lists, fixture corpus) is being open-sou
 too; its canonical home is the companion repo [`read-twice-rules`][rules] under a
 Creative Commons licence. The copy bundled in this repo is MIT until that repo is stood up.
 
-### Trademarks
+### Names and marks
 
 The **Read Twice** name, wordmark, and verdict colour palette (warm coral, warm amber,
-deep moss) are trademarks and trade dress of KeMeK Network. They are **not** covered by
-the MIT grant. No rights to use the name, mark, or palette are granted by this repository
-— independent forks must replace the brand name and palette with their own.
+deep moss) are **not** covered by the MIT grant. KeMeK Network reserves all rights in
+them — independent forks must replace the name and palette with their own.
