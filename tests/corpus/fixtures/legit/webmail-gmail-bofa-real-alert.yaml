@@ -1,0 +1,10 @@
+id: webmail-gmail-bofa-real-alert
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A genuine Bank of America alert in Gmail: display "Bank of America" from
+  onlinebanking@ealerts.bankofamerica.com — a subdomain of the brand's own sender domain, so
+  sender-domain-mismatch passes it. The paired guard for webmail-gmail-bofa-lookalike-sender.
+source: synthetic — authored for the webmail rules
+captured_at: 2026-10-21

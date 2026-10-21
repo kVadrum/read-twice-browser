@@ -65,3 +65,23 @@ export function textHasPhraseNearTop(text: string, phrase: string, fraction = 0.
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+
+/** A whole-word occurrence: `[index, end)` offsets into the searched text. */
+export interface WordSpan {
+  index: number;
+  end: number;
+}
+
+/** Every case-insensitive occurrence of `phrase`, as textHasPhrase matches it (a substring). */
+export function findPhrases(text: string, phrase: string): WordSpan[] {
+  const re = new RegExp(escapeRegExp(phrase), 'gi');
+  return Array.from(text.matchAll(re), (m) => ({ index: m.index, end: m.index + m[0].length }));
+}
+
+/** Every whole-word occurrence of `word`. The boundary is "no letter or digit touching
+ *  either side" rather than `\b`, so a name ending in punctuation ("I.R.S.") still
+ *  matches before a space, while "Chase" is never found inside "purchase". */
+export function findWords(text: string, word: string, caseSensitive = false): WordSpan[] {
+  const re = new RegExp(`(?<![A-Za-z0-9])${escapeRegExp(word)}(?![A-Za-z0-9])`, caseSensitive ? 'g' : 'gi');
+  return Array.from(text.matchAll(re), (m) => ({ index: m.index, end: m.index + m[0].length }));
+}

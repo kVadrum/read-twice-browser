@@ -1,0 +1,11 @@
+id: directory-bank-branch-local
+label: legit
+expected_severity: none
+domain: mainstreet-bank-branches.example
+notes: >
+  A local-directory listing of bank branches: "Chase Bank phone number: <local number>" is exactly
+  the claim shape a fake support page uses, but the number is a branch's geographic line, which no
+  canonical list could ever hold. Pins the toll-free restriction — impersonated support lines are
+  toll-free; branch, post-office and store numbers beside a brand name are local.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

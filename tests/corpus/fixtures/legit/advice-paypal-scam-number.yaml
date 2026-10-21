@@ -1,0 +1,11 @@
+id: advice-paypal-scam-number
+label: legit
+expected_severity: none
+domain: seniors-money-tips.example
+notes: >
+  Consumer-advice blog (not an allow-listed news host) quoting a scam number in the very sentence
+  that says "call PayPal customer service". The scam-writing guard ("scammers" within 200 chars)
+  keeps it out of red; the real PayPal line it also quotes is canonical. The long tail of local news
+  and advice sites is far larger than NEWS_DOMAINS_ALLOW.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

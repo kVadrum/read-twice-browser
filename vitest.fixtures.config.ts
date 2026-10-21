@@ -7,5 +7,9 @@ export default defineConfig({
   test: {
     include: ['tests/corpus/**/*.fixtures.ts'],
     environment: 'node',
+    // The printed calibration report IS this run's output (testing-strategy §3). Vitest 4's
+    // default reporter drops a passing test's intercepted console output, so without this the
+    // report vanished while every gate stayed green.
+    disableConsoleIntercept: true,
   },
 });

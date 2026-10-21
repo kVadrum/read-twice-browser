@@ -1,0 +1,12 @@
+id: contact-guide-bank-real-numbers
+label: legit
+expected_severity: none
+domain: bank-contact-guide.example
+notes: >
+  A third-party "how to contact your bank" page, off the brand's domain, listing Wells Fargo's and
+  Bank of America's REAL published numbers beside support phrases — and one brand's phrase within
+  reach of the other brand's number. Pins that a canonical number never fires, whichever listed
+  brand it belongs to. The numbers are the banks' public corporate lines (wellsfargo.com,
+  bankofamerica.com), not personal data, so they are used as-is rather than from the 555-01xx block.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

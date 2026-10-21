@@ -1,0 +1,16 @@
+id: webmail-outlook-office-freemail-microsoft-phone
+label: scam
+expected_severity: yellow
+expected_rules:
+  - phone-number-impersonation
+  - sender-domain-mismatch
+domain: outlook.office.com
+notes: >
+  A Microsoft "customer support" callback email from a free outlook.com mailbox, read in work or
+  school Outlook (outlook.office.com, on office.com — another Microsoft phone-list domain). Pins
+  both halves of the webmail-origin fix: the client host never counts, and a free-webmail sender
+  never counts either, even though outlook.com is on Microsoft's web list. Before the fix the
+  phone rule was silent here; only the sender-domain-mismatch line showed. Yellow, not red:
+  webmail mode caps every hit at yellow (engine.ts).
+source: synthetic — authored for the webmail phone-origin fix (OWA DOM as in webmail-outlook-microsoft-sender)
+captured_at: 2026-10-21

@@ -1,0 +1,14 @@
+id: webmail-gmail-aarp-fraud-newsletter
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A fraud-awareness newsletter, opened in Gmail, that quotes red-tier pressure phrases ("gift
+  cards only", "do not tell anyone") while warning about a scam — the webmail twin of
+  news-nytimes-pressure. The page host is mail.google.com, on no allow-list; the email's
+  sender (fraudwatch@aarp.org — the apex is on NEWS_SENDERS_ALLOW; aarp.org's DMARC covers no
+  subdomains) is the content's origin in webmail mode, so the pressure rule's news exemption
+  still holds. Without that, this draws a banner: the pressure sentences here are neither advice
+  nor a scam report on their own.
+source: synthetic — authored for the webmail rules (text written for the corpus, not copied)
+captured_at: 2026-10-21

@@ -1,0 +1,13 @@
+id: webmail-gmail-bofa-lookalike-sender
+label: scam
+expected_severity: yellow
+expected_rules:
+  - sender-domain-mismatch
+domain: mail.google.com
+notes: >
+  Banner example 6 in Gmail: an open email displayed as "Bank of America" from
+  bofa-secure-services.example, a domain off the brand's sender list. Exercises webmail mode
+  end-to-end (Gmail adapter → features.webmail → sender-domain-mismatch, yellow). The body
+  avoids every urgency phrase, isolating the sender rule; the Gmail nav text is not judged.
+source: synthetic — authored for the webmail rules (Gmail DOM shaped after gmail.js / InboxSDK selectors)
+captured_at: 2026-10-21

@@ -31,8 +31,11 @@ describe('corpus calibration', () => {
     expect(redFP.map((r) => r.id)).toEqual([]);
   });
 
-  it('matches each scam fixture to its expected severity and rules', () => {
-    for (const r of results.filter((r) => r.label === 'scam')) {
+  // A legit fixture's documented outcome is part of the truth set too: a documented yellow (a
+  // young legit domain, a red rule capped in webmail mode) must stay exactly that, and a fixture
+  // documented as silent must not quietly start drawing a yellow the red gate above can't see.
+  it('matches each fixture, scam or legit, to its expected severity and rules', () => {
+    for (const r of results) {
       expect(r.verdict.severity, `${r.id}: severity`).toBe(r.expectedSeverity);
       for (const ruleId of r.expectedRules) {
         expect(r.firedRuleIds, `${r.id}: expected rule "${ruleId}" to fire`).toContain(ruleId);

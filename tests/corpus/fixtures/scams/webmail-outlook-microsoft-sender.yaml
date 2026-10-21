@@ -1,0 +1,14 @@
+id: webmail-outlook-microsoft-sender
+label: scam
+expected_severity: yellow
+expected_rules:
+  - sender-domain-mismatch
+domain: outlook.live.com
+notes: >
+  Outlook on the web reading pane: "Microsoft account team" from account-security-ms.example,
+  not a Microsoft sending domain (the real one is accountprotection.microsoft.com). Exercises
+  the Outlook adapter end-to-end: sender split from the "Name<addr>" text, body from
+  UniqueMessageBody, and the signature block that repeats the body's role/label is not read.
+  No support phone, so tech-support-impersonation stays out; yellow only.
+source: synthetic — authored for the webmail rules (OWA DOM per Trocker / aziru / the 2026-09 capture)
+captured_at: 2026-10-21

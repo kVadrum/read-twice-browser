@@ -1,0 +1,14 @@
+id: webmail-gmail-replyto-freemail
+label: scam
+expected_severity: yellow
+expected_rules:
+  - reply-to-mismatch
+domain: mail.google.com
+notes: >
+  The "are you available? quick favor" opener from a free-webmail From (gmail.com) whose
+  Reply-To is a different free-webmail provider (outlook.com) — replies go to someone else.
+  Reply-To is read passively from Gmail's "Show details" rows, which are only in the DOM once
+  the USER has opened them; we never open them. No brand in the display name, no urgency
+  phrase, isolating reply-to-mismatch. Local parts are synthetic.
+source: synthetic — authored for the webmail rules (Gmail details rows per the 2026-09 capture)
+captured_at: 2026-10-21

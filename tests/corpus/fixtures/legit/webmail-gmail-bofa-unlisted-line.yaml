@@ -1,0 +1,13 @@
+id: webmail-gmail-bofa-unlisted-line
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A genuine Bank of America alert in Gmail, from onlinebanking@ealerts.bankofamerica.com, that
+  lists a toll-free customer-service line the canonical-phone list doesn't carry (synthetic
+  555-01xx standing in for any real but unlisted line). On bankofamerica.com the brand's own
+  domain exempts it; in webmail mode the page host is the mail client, so only the sender can
+  (origin.ts). Before that fix this drew a red "fake Bank of America support number". Paired with
+  the scam fixture webmail-gmail-bofa-freemail-phone: the same email from a free mailbox.
+source: synthetic — authored for the webmail phone-origin fix
+captured_at: 2026-10-21

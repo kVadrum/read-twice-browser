@@ -1,0 +1,17 @@
+id: directory-mixed-vendor-support-lines
+label: legit
+expected_severity: none
+domain: oakridge-senior-center.example
+notes: >
+  A senior center's "who to call" sheet: contact lines for several companies on one line, one
+  company on the canonical list (Chase, Wells Fargo, UPS — their real published numbers) and one
+  not (synthetic 555-01xx lines for the unlisted banks and carrier). Pins exclusive phone
+  ownership: a claim owns the one number it leads into, so "Chase customer service: <real> ·
+  Capital One customer service: <other>" never reads Capital One's line as a fake Chase number,
+  and in the reverse order "<other> | Wells Fargo customer service: <real>" the Wells Fargo claim
+  is the heading of the number after it, not a label for the one before. Before that fix every
+  line here drew a red. Uses banks and a carrier rather than Apple or Microsoft so
+  tech-support-impersonation (near-top match) stays out and the phone rule is what is pinned. The
+  tab-joined table-row form is unit-tested instead: the harness shim does not join cells with tabs.
+source: synthetic — authored for the phone-ownership fix
+captured_at: 2026-10-21

@@ -1,0 +1,17 @@
+id: webmail-gmail-bofa-freemail-phone
+label: scam
+expected_severity: yellow
+expected_rules:
+  - phone-number-impersonation
+  - sender-domain-mismatch
+domain: mail.google.com
+notes: >
+  The text of webmail-gmail-bofa-unlisted-line, word for word, from a free mailbox
+  (bofa.alerts.0142@outlook.com) under the display name "Bank of America". The positive control
+  for that legit fixture: its exemption must come from the brand's own sender, never from the
+  email's wording, so the same email from anyone else still draws the phone rule;
+  sender-domain-mismatch adds its line. The free-mailbox trap itself (outlook.com is on
+  Microsoft's web list) is pinned by webmail-outlook-office-freemail-microsoft-phone. Yellow, not
+  red: webmail mode caps every hit at yellow until a legit-email corpus calibrates it (engine.ts).
+source: synthetic — authored for the webmail phone-origin fix
+captured_at: 2026-10-21

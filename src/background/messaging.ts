@@ -8,7 +8,8 @@ import type { ContentToWorker, WorkerToContent } from '../lib/runtime/messaging-
 
 // The worker assembles the EvaluationContext and runs the (pure) engine. The content
 // script only extracts features and renders — all rule evaluation happens here, where
-// the ruleset, redirect chains, RDAP, and dismissal store live (architecture §4.1).
+// the ruleset, RDAP, and dismissal store live (architecture §4.1). No redirect chain is
+// collected in v0.1 (navigation.ts).
 
 const ruleset = loadRuleset();
 
@@ -37,9 +38,9 @@ async function handle(msg: ContentToWorker, sender: chrome.runtime.MessageSender
       return { type: 'Verdict', verdict: evaluatePage(ruleset, ctx) };
     }
     case 'CheckDismissed':
-      return { type: 'DismissedResult', host: msg.host, dismissed: await isDismissed(msg.host, Date.now()) };
+      return { type: 'DismissedResult', key: msg.key, dismissed: await isDismissed(msg.key, Date.now()) };
     case 'RecordDismissal':
-      await recordDismissal(msg.host, Date.now());
+      await recordDismissal(msg.key, Date.now());
       return { type: 'Ack' };
   }
 }

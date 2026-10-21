@@ -1,0 +1,17 @@
+id: webmail-outlook-live-microsoft-refund-phone
+label: scam
+expected_severity: yellow
+expected_rules:
+  - phone-number-impersonation
+  - sender-domain-mismatch
+domain: outlook.live.com
+notes: >
+  The Microsoft 365 "renewal refund" callback email, read in consumer Outlook. "Microsoft 365
+  customer support" is not one of tech-support-impersonation's phrases, so the phone rule is the
+  hit here. Before the webmail-origin fix it was silent on this host: outlook.live.com sits on
+  live.com, which is on Microsoft's phone list, so the mail client's own host exempted every
+  email read in it, while the same email in Gmail drew the phone rule. In webmail mode the sender alone is
+  the content's origin. sender-domain-mismatch adds its line ("Microsoft 365 Billing" from
+  ms365-renewals.example). Yellow, not red: webmail mode caps every hit at yellow (engine.ts).
+source: synthetic — authored for the webmail phone-origin fix (OWA DOM as in webmail-outlook-microsoft-sender)
+captured_at: 2026-10-21

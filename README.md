@@ -19,6 +19,9 @@ a payment form that sends your card somewhere unexpected, a fake support number.
 something matches, a warm **amber** ("worth pausing") or **coral** ("close this tab")
 banner slides in at the top of the page. That's it.
 
+On Gmail, Outlook on the web and Yahoo Mail it reads the email you have open rather than the text of the mail client around it: the sender's name and address, the reply-to address if your mail client already shows it, and the message itself.
+It never opens or clicks anything to find more, and nothing from your email leaves your device unless you choose to send it to Read Twice from the banner.
+
 Everything runs on your device. The extension makes exactly **one** outbound call by
 default — an anonymous domain-registration lookup (RDAP) to check how new a site is —
 and that's cached for 30 days and can be turned off. No analytics, no telemetry, no
@@ -26,10 +29,15 @@ accounts, no AI reading your pages.
 
 ## Status
 
-**v0.1.0, in active development — built in the open.** The heuristic engine is being
-implemented rule by rule; the banner and the remaining rules are under construction.
-Not yet published to the Chrome Web Store or Firefox Add-ons. Expect rough edges — and
-feel free to watch the work happen on `dev`.
+**Pre-release, in active development — built in the open.**
+All 13 detection rules are written and unit-tested, and a seed set of labelled scam and legitimate pages checks the whole pipeline end to end.
+Two of the rules can't fire in the extension yet.
+`domain-age-young` waits on the domain-registration lookup, which isn't wired up.
+`redirect-chain-long` is held back on purpose: counting the redirects behind a link would take a browser permission (`webRequest`) this extension deliberately doesn't ask for.
+Webmail mode is in, and its warnings stay amber until it has been calibrated against real email.
+The banner is built, with golden-image tests in Chromium and Firefox; closing it isn't remembered across page loads yet.
+Not yet published to the Chrome Web Store or Firefox Add-ons.
+Expect rough edges — and feel free to watch the work happen on `dev`.
 
 ## Development
 
@@ -38,6 +46,7 @@ pnpm install
 pnpm dev      # Vite + crxjs HMR; load the built dir as an unpacked extension
 pnpm build    # production build to dist/
 pnpm test     # unit tests (Vitest)
+pnpm test:golden   # banner golden images (Playwright; see tests/golden/README.md)
 pnpm typecheck
 ```
 

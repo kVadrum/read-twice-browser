@@ -7,7 +7,9 @@ import type { FixtureMeta } from './types';
 // would assemble in the browser. The HTML is parsed by jsdom and run through the SAME
 // `extractPageFeatures` the content script uses — so the corpus calibrates the real
 // extraction + engine pipeline, not a re-implementation. The non-DOM context fields
-// (RDAP age, redirect chain) come from the YAML, mirroring what the worker adds.
+// (RDAP age, redirect chain) come from the YAML, standing in for what the worker adds. The
+// shipped worker adds no redirect chain at all (dormant by decision, background/navigation.ts),
+// so a fixture's `redirect_chain` measures redirect-chain-long, not the extension.
 
 export function buildContext(html: string, meta: FixtureMeta): EvaluationContext {
   const dom = new JSDOM(html, { url: `https://${meta.domain}/` });
@@ -47,16 +49,21 @@ function shimInnerText(window: JSDOM['window']): void {
 }
 
 // Tags whose boundaries innerText renders as line breaks. Not exhaustive — the common
-// block-level set is enough to keep distinct blocks' text from gluing together.
+// block-level set is enough to keep distinct blocks' text from gluing together. Never an
+// inline (or inline-block) element such as BUTTON or LABEL: a browser runs "Click <button>Pay
+// </button> now" together as "Click Pay now", and a break there would hide a phrase the
+// extension matches — the shim must never under-match, or the red-FP gate passes pages the
+// shipped extension draws red on.
 const BLOCK_TAGS = new Set([
-  'ADDRESS', 'ARTICLE', 'ASIDE', 'BLOCKQUOTE', 'BUTTON', 'DD', 'DIV', 'DL', 'DT',
+  'ADDRESS', 'ARTICLE', 'ASIDE', 'BLOCKQUOTE', 'DD', 'DIV', 'DL', 'DT',
   'FIELDSET', 'FIGCAPTION', 'FIGURE', 'FOOTER', 'FORM', 'H1', 'H2', 'H3', 'H4', 'H5',
-  'H6', 'HEADER', 'HR', 'LABEL', 'LI', 'MAIN', 'NAV', 'OL', 'P', 'PRE', 'SECTION',
+  'H6', 'HEADER', 'HR', 'LI', 'MAIN', 'NAV', 'OL', 'P', 'PRE', 'SECTION',
   'TABLE', 'TR', 'UL',
 ]);
+const CELL_TAGS = new Set(['TD', 'TH']);
 
-/** textContent, but with a newline at each block-element and <br> boundary — the one
- *  facet of innerText that changes which phrases match. */
+/** textContent, but with a newline at each block-element and <br> boundary, and a tab
+ *  between a row's cells — the facets of innerText that change which phrases match. */
 function blockAwareText(el: Element): string {
   let out = '';
   for (const node of Array.from(el.childNodes)) {
@@ -72,6 +79,9 @@ function blockAwareText(el: Element): string {
       if (block) out += '\n';
       out += blockAwareText(child);
       if (block) out += '\n';
+      if (CELL_TAGS.has(child.tagName) && child.nextElementSibling && CELL_TAGS.has(child.nextElementSibling.tagName)) {
+        out += '\t';
+      }
     }
   }
   return out;

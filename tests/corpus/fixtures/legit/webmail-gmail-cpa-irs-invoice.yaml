@@ -1,0 +1,15 @@
+id: webmail-gmail-cpa-irs-invoice
+label: legit
+expected_severity: yellow
+expected_rules:
+  - government-impersonation
+domain: mail.google.com
+notes: >
+  An accounting firm's note that a client's return was accepted by the IRS, with the firm's own
+  invoice ("pay now through our client portal"). government-impersonation fires: the agency and
+  a pay CTA anywhere in the body, from a sender that is not the IRS. A DOCUMENTED yellow false
+  positive under the webmail cap (engine.ts); before the cap this was red. Tying the agency to
+  the CTA (same sentence) was not added: real redelivery-fee scams put "USPS" and "Pay the fee"
+  in different blocks (webmail-yahoo-usps-fee). Counts toward the legit yellow-FP rate.
+source: synthetic — authored for the webmail severity cap (shape of a CPA client email)
+captured_at: 2026-10-21

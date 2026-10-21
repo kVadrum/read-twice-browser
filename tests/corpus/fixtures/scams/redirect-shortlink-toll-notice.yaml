@@ -1,0 +1,18 @@
+id: redirect-shortlink-toll-notice
+label: scam
+expected_severity: yellow
+expected_rules:
+  - scam-language-urgent
+  - redirect-chain-long
+domain: toll-balance-notice.example
+redirect_chain:
+  - bit.ly
+  - trk.sms-relay.example
+  - go.notice-hop.example
+notes: >
+  Unpaid-toll smish landing reached through a texted bit.ly link and two relay hops (3 redirects).
+  scam-language-urgent fires ("account will be suspended") and redirect-chain-long adds its evidence
+  line, which must leave the severity at yellow — a modifier never elevates. The card form sits on a
+  later page, so nothing else fires. bit.ly is the one real host: the shortener list matches real names.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

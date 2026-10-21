@@ -1,5 +1,5 @@
 import bannerCss from './banner.css?inline';
-import { COPY, fillTemplate } from './copy';
+import { bannerText } from './copy';
 import type { Verdict } from '../heuristics/rule-types';
 
 // Renders the verdict banner inside a CLOSED Shadow DOM so page CSS can't restyle our
@@ -17,7 +17,8 @@ const DETAILS_ID = 'read-twice-banner-details';
 
 export interface BannerCallbacks {
   onSendToReadTwice: () => void;
-  /** Records the 30-day per-domain dismissal and unmounts (content/dismiss.ts). */
+  /** Records the 30-day dismissal — of the site, or in webmail mode of the email's sender —
+   *  and unmounts (content/dismiss.ts). */
   onNotAScam: () => void;
 }
 
@@ -66,13 +67,30 @@ export function unmountBanner(): void {
   document.getElementById(HOST_ID)?.remove();
 }
 
+/**
+ * Forgets the banner entirely — unmounts it AND drops the re-show memory — for when the
+ * page's subject changes without a navigation (webmail: another email opened). Plain
+ * unmountBanner keeps `lastMount` so Ctrl/Cmd+Shift+R can bring a dismissed banner back;
+ * after a subject change that would resurrect one email's verdict over a different one.
+ */
+export function clearBanner(): void {
+  lastMount = null;
+  dismissedThisLoad = false;
+  unmountBanner();
+}
+
+/** True for our own banner nodes — so a DOM watcher never mistakes the banner it caused
+ *  for a change on the page. */
+export function isBannerNode(node: Node): boolean {
+  const host = active?.host ?? document.getElementById(HOST_ID);
+  return host != null && host.contains(node);
+}
+
 function render(verdict: Verdict, cb: BannerCallbacks): void {
   const severity = verdict.severity === 'red' ? 'red' : 'yellow';
-  const hits = verdict.hits;
-  // Hits arrive red-first from the engine. The headline + action come from the
-  // strongest hit that actually carries copy (modifier rules have empty headlines).
-  const headlineHit = hits.find((h) => COPY[h.ruleId]?.headline) ?? hits[0]!;
-  const actionHit = hits.find((h) => COPY[h.ruleId]?.action);
+  // Which hit's copy, and which surface's (an email gets its email variants), is decided in
+  // copy.ts so it stays testable without a DOM.
+  const text = bannerText(verdict);
 
   const host = document.createElement('div');
   host.id = HOST_ID;
@@ -98,7 +116,7 @@ function render(verdict: Verdict, cb: BannerCallbacks): void {
   const mark = span('rt-mark');
   mark.append(eyeMark(severity === 'red'));
   const headline = span('rt-headline');
-  headline.textContent = fillTemplate(COPY[headlineHit.ruleId]?.headline ?? '', headlineHit.vars);
+  headline.textContent = text.headline;
   const chev = span('rt-chev');
   chev.append(chevronMark());
   toggle.append(mark, headline, chev);
@@ -106,7 +124,7 @@ function render(verdict: Verdict, cb: BannerCallbacks): void {
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'rt-close';
-  close.setAttribute('aria-label', 'Hide this for this site');
+  close.setAttribute('aria-label', text.closeLabel);
   close.append(closeMark());
 
   bar.append(toggle, close);
@@ -116,13 +134,8 @@ function render(verdict: Verdict, cb: BannerCallbacks): void {
   details.id = DETAILS_ID;
   const inner = div('rt-detailsinner');
 
-  for (const hit of hits) {
-    const evidence = COPY[hit.ruleId]?.evidence;
-    if (evidence) inner.append(p('rt-evidence', fillTemplate(evidence, hit.vars)));
-  }
-  if (actionHit) {
-    inner.append(p('rt-action', fillTemplate(COPY[actionHit.ruleId]!.action, actionHit.vars)));
-  }
+  for (const line of text.evidence) inner.append(p('rt-evidence', line));
+  if (text.action != null) inner.append(p('rt-action', text.action));
 
   const actions = div('rt-actions');
   actions.append(
@@ -202,7 +215,8 @@ function setExpanded(expand: boolean): void {
 }
 
 function dismiss(cb: BannerCallbacks): void {
-  // Both the × and "This isn't a scam" record the 30-day per-domain dismissal (§2.3 / §7).
+  // Both the × and "This isn't a scam" record the 30-day dismissal (§2.3 / §7) — per site,
+  // or in webmail mode per sender.
   // Marking it dismissed-this-load arms the re-show shortcut below.
   dismissedThisLoad = true;
   cb.onNotAScam();

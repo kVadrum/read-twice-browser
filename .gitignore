@@ -6,6 +6,10 @@ node_modules/
 dist/
 *.zip
 
+# Playwright run output (golden-lane diffs + traces; the goldens themselves ARE committed)
+test-results/
+playwright-report/
+
 # Local-only dev + agent files (workspace policy — never committed)
 CLAUDE.md
 STATE.md

@@ -1,0 +1,12 @@
+id: security-credit-union-giftcard-advice
+label: legit
+expected_severity: none
+domain: www.riverbend-cu.example
+notes: >
+  A credit union's fraud-prevention page that quotes red-tier pressure phrases as advice ("will
+  never ask you to pay with gift cards") and as a scam report ("Scammers often tell members 'do
+  not tell anyone'"). The pressure rule's guards are sentence-local: an advice cue before the
+  phrase, or a report cue in its sentence. Before the guards this was a RED banner on a bank's
+  own security page — the existential failure (ADR-005).
+source: synthetic — authored for the pressure-rule advice + scam-report guards
+captured_at: 2026-10-21

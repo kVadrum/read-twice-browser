@@ -1,0 +1,15 @@
+id: webmail-gmail-cra-spoofed-canada-ca
+label: scam
+expected_severity: yellow
+expected_rules:
+  - government-impersonation
+domain: mail.google.com
+notes: >
+  A CRA payment scam whose From is spoofed onto canada.ca — the CRA's real website, but a
+  domain whose DMARC is p=none (measured 2026-10-21), so receivers deliver a forged From on it.
+  canada.ca stays on the agency's HOST path; only cra-arc.gc.ca (p=reject) is on its sender path
+  (lists.ts). Before the host/sender split the From alone exempted this email and it drew no
+  banner. Yellow under the webmail cap. The payment link is an .example host; the From names the
+  real domain because the spoof is what the fixture exercises.
+source: synthetic — authored for the sender-path DMARC split (CRA scam shape per CAFC bulletins)
+captured_at: 2026-10-21

@@ -1,0 +1,15 @@
+id: shortlink-library-article
+label: legit
+expected_severity: none
+domain: www.harborview-gazette.example
+redirect_chain:
+  - t.co
+  - bit.ly
+  - harborview-gazette.example
+notes: >
+  A local news article reached from a social post: t.co wraps the publisher's own bit.ly link, which
+  lands on the bare domain before its www redirect — 3 redirects through two shorteners.
+  redirect-chain-long fires, but it is modifier-only and nothing else does, so the page must stay
+  silent. t.co and bit.ly are real hosts because the shortener list matches real names.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

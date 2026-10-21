@@ -1,0 +1,15 @@
+id: shop-repair-brands-own-number
+label: legit
+expected_severity: none
+domain: bridgetown-device-repair.example
+notes: >
+  The phone-number-impersonation long-tail trap: a local repair shop that names Apple and Microsoft
+  right beside its own numbers, in the shapes such pages use. Bare brand names next to its toll-free
+  line ("Apple and Microsoft device repair") are not support claims; a brand-support phrase in the
+  same sentence as the number is self-claimed ("call us"); a "Microsoft 365 support" service-list
+  item sits in a different block from the "Phone:" line. Each alone would read as a fake brand number
+  without its guard. Deliberately avoids "Apple Support" / "Microsoft Support" near the top:
+  tech-support-impersonation (a separate rule) would red on that shape — a latent red-FP in that
+  rule, flagged for its own fix.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

@@ -1,0 +1,12 @@
+id: news-apnews-scam-number
+label: legit
+expected_severity: none
+domain: apnews.com
+notes: >
+  News coverage quoting the scam's callback number beside "Amazon customer service" in one sentence —
+  every phone-number-impersonation precondition holds, so NEWS_DOMAINS_ALLOW is what keeps journalism
+  out of red. The headline's "Fake" sits more than 200 chars from the number on purpose, so the
+  scam-writing guard does not also cover it and this fixture pins the news allow-list specifically.
+  Uses Amazon, not a tech-support brand: tech-support-impersonation has no news allow-list (STATE).
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

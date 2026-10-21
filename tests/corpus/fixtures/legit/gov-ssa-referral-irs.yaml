@@ -1,0 +1,13 @@
+id: gov-ssa-referral-irs
+label: legit
+expected_severity: none
+domain: www.ssa.gov
+notes: >
+  A government page that gives its own number and, in the same sentence, sends the reader to
+  another agency: "call Social Security at <number>; for questions about your taxes, contact the
+  IRS." The IRS is a second party there, not the number's owner. Before the directional-ownership
+  fix the rule read "contact the IRS" after the number as a claim on it and drew a red with the
+  IRS's number as the "real" one. The SSA line is synthetic (555-01xx); SSA is not on the
+  canonical-phone list, so a real line would behave the same.
+source: synthetic — authored for the phone-ownership fix (shape of ssa.gov's SSA-1099 page)
+captured_at: 2026-10-21

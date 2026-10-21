@@ -19,6 +19,10 @@ export async function lookupDomainAge(host: string, now: number): Promise<RdapRe
   // TODO: fetch `${RDAP_ENDPOINT}${eTLDplus1}` with a 500ms soft timeout, parse
   // events[?eventAction='registration'].eventDate, compute ageDays. On any failure
   // return EMPTY so the dependent rule simply does not fire (never a silent error).
+  // `host` arrives as the page's full hostname (PageFeatures.host): reduce it HERE, in the
+  // worker, with match.ts registrableDomain() — both for the query (RDAP answers for
+  // registered domains, and the full name would tell the provider more than it needs) and
+  // for the cache key — never in the content script (content/extract.ts).
   const result = EMPTY;
 
   await putCached(host, result, now);

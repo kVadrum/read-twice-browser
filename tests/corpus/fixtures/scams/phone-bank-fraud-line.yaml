@@ -1,0 +1,12 @@
+id: phone-bank-fraud-line
+label: scam
+expected_severity: red
+expected_rules:
+  - phone-number-impersonation
+domain: account-security-desk.example
+notes: >
+  Fake bank fraud-desk page: "contact Wells Fargo customer service at <number>" with a toll-free
+  number missing from Wells Fargo's published lines. No brand token in the host, no payment form,
+  no listed urgency phrase — the phone rule is the only signal, so this pins it firing alone.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

@@ -1,0 +1,11 @@
+id: webmail-gmail-person-named-chase
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A friend named Chase writing from gmail.com — the person-name trap for the bare "Chase"
+  keyword. "Chase Miller" is a brand word plus a surname, not plus brand context, so it is
+  not a claim to be the bank. The earlier collapsed message in the thread (display name
+  "Chase" alone, also gmail.com) is not the open message and is never read.
+source: synthetic — authored for the webmail rules
+captured_at: 2026-10-21

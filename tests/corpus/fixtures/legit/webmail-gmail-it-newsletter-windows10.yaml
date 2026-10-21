@@ -1,0 +1,15 @@
+id: webmail-gmail-it-newsletter-windows10
+label: legit
+expected_severity: yellow
+expected_rules:
+  - tech-support-impersonation
+domain: mail.google.com
+notes: >
+  A local IT company's newsletter about Windows 10's end of support, with its own number.
+  tech-support-impersonation fires: "Microsoft Support" opens the email, and in email the
+  rule's near-top window (1500 chars) covers the whole body. A DOCUMENTED yellow false positive
+  under the webmail cap (engine.ts); before the cap this was red. A lifecycle exclusion ("support
+  for … has ended") was not added: "your Windows support has ended, call now" is itself a scam
+  lure. Counts toward the legit yellow-FP rate.
+source: synthetic — authored for the webmail severity cap (shape of an IT-services newsletter)
+captured_at: 2026-10-21

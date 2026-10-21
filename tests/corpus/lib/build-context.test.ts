@@ -22,4 +22,21 @@ describe('buildContext innerText shim', () => {
 
     expect(ctx.features.bodyExcerpt).not.toContain('finalnotice');
   });
+
+  // The other direction: never break where a browser doesn't. An under-matching shim hides a
+  // phrase the extension matches, so the red-FP gate would pass a page that draws red.
+  it('runs inline elements together, as a browser does (button, label)', () => {
+    const html = '<body><p>Click <button>Pay</button> now</p><p>Enter <label>your card</label> number</p></body>';
+    const ctx = buildContext(html, { id: 'inline-probe', label: 'scam', domain: 'x.example' });
+
+    expect(ctx.features.bodyExcerpt).toContain('Click Pay now');
+    expect(ctx.features.bodyExcerpt).toContain('Enter your card number');
+  });
+
+  it("joins a row's cells with a tab", () => {
+    const html = '<body><table><tr><td>account will be</td><td>suspended</td></tr></table></body>';
+    const ctx = buildContext(html, { id: 'cell-probe', label: 'scam', domain: 'x.example' });
+
+    expect(ctx.features.bodyExcerpt).toContain('account will be\tsuspended');
+  });
 });

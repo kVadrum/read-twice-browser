@@ -1,11 +1,12 @@
 import { mountBanner } from '../lib/banner/banner';
 import { buildHandoffUrl, HANDOFF_BASE_URL } from '../lib/handoff/send-to-read-twice';
-import { dismissForThisSite } from './dismiss';
+import { dismissFor } from './dismiss';
 import type { PageFeatures, Verdict } from '../lib/heuristics/rule-types';
 
 // Wires the verdict to the banner and the banner's two buttons to their actions.
 // The Send-to-Read-Twice hand-off opens in a new tab on the user's click gesture.
-export function renderVerdict(verdict: Verdict, features: PageFeatures): void {
+// `dismissalKey` is the same key the dismissal check used (content/dismiss.ts).
+export function renderVerdict(verdict: Verdict, features: PageFeatures, dismissalKey: string): void {
   mountBanner(verdict, {
     onSendToReadTwice() {
       let url: string;
@@ -25,7 +26,7 @@ export function renderVerdict(verdict: Verdict, features: PageFeatures): void {
       window.open(url, '_blank', 'noopener');
     },
     onNotAScam() {
-      void dismissForThisSite(features.host);
+      void dismissFor(dismissalKey);
     },
   });
 }

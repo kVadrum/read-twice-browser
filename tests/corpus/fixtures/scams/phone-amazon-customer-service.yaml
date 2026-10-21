@@ -1,0 +1,13 @@
+id: phone-amazon-customer-service
+label: scam
+expected_severity: red
+expected_rules:
+  - phone-number-impersonation
+domain: orders-helpdesk-247.example
+notes: >
+  Fake customer-service-number page: "Call Amazon Customer Service toll-free at <number>" with a
+  toll-free number that is not Amazon's published line (1-888-280-4331). The host carries no brand
+  token, so tld-impersonation is silent and the phone rule alone carries the red. The heading's
+  "Amazon Customer Service" sits on its own line, so it is the in-sentence claim that links the number.
+source: synthetic — authored for the seed corpus
+captured_at: 2026-10-21

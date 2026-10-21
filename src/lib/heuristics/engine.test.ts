@@ -98,3 +98,45 @@ describe('evaluatePage robustness + ordering', () => {
     expect(v.hits[0]!.ruleId).toBe('r');
   });
 });
+
+describe('evaluatePage in webmail mode', () => {
+  // The same rules, read over an open email: webmail mode is uncalibrated (heuristic-ruleset
+  // §4 — no legit-email corpus), so every hit is capped at yellow. Detection is unchanged.
+  function inMail(ctx: EvaluationContext, host = 'mail.google.com'): EvaluationContext {
+    const features = { ...ctx.features, host, url: `https://${host}/mail/` };
+    features.webmail = { host, displayName: 'Sender', fromAddress: 'x@y.example', replyToAddress: null, bodyExcerpt: '' };
+    return { ...ctx, features };
+  }
+
+  it('caps a red base severity and an elevation at yellow, and still shows the banner', () => {
+    const rules = [rule('r', 'red'), rule('a', 'yellow', { elevateWhen: ['b'] }), rule('b', 'yellow')];
+    const onPage = evaluatePage(rules, ctxFiring(['r', 'a', 'b']));
+    expect(onPage.severity).toBe('red');
+
+    const v = evaluatePage(rules, inMail(ctxFiring(['r', 'a', 'b'])));
+    expect(v.severity).toBe('yellow');
+    expect(v.hits.map((h) => [h.ruleId, h.severity])).toEqual([
+      ['r', 'yellow'],
+      ['a', 'yellow'],
+      ['b', 'yellow'],
+    ]);
+  });
+
+  it('keeps the designed-red hit first, so the headline stays the most specific one', () => {
+    const v = evaluatePage([rule('y', 'yellow'), rule('r', 'red')], inMail(ctxFiring(['y', 'r'])));
+    expect(v.hits.map((h) => h.ruleId)).toEqual(['r', 'y']);
+  });
+
+  it('marks the verdict as about an email, and only in webmail mode', () => {
+    expect(evaluatePage([rule('a', 'yellow')], inMail(ctxFiring(['a']))).surface).toBe('email');
+    expect(evaluatePage([rule('a', 'yellow')], ctxFiring(['a'])).surface).toBeUndefined();
+  });
+
+  it('caps on a webmail client host with no email open, too', () => {
+    const ctx = ctxFiring(['r']);
+    const client = { ...ctx, features: { ...ctx.features, host: 'outlook.live.com' } };
+    const v = evaluatePage([rule('r', 'red')], client);
+    expect(v.severity).toBe('yellow');
+    expect(v.surface).toBeUndefined(); // no email is being judged
+  });
+});

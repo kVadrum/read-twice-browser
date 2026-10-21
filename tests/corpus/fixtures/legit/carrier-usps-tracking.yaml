@@ -3,8 +3,9 @@ label: legit
 expected_severity: none
 domain: tools.usps.com
 notes: >
-  Real USPS tracking. The long tracking number contains digit runs that the unanchored PHONE_RE
-  matches, but no tech-support brand is named, so nothing fires. Guards against a bare phone-like
-  match producing a banner; brand token "usps" is on usps.com (suppressed).
+  Real USPS tracking. The long tracking number is not a phone number (the shared matcher in
+  heuristics/phone.ts rejects digit runs inside longer numbers and non-NANP groups), and no
+  tech-support brand is named, so nothing fires. Guards against a phone-like digit run producing a
+  banner; brand token "usps" is on usps.com (suppressed).
 source: synthetic — authored for the seed corpus
 captured_at: 2026-06-25

@@ -1,0 +1,12 @@
+id: webmail-outlook-m365-internal
+label: legit
+expected_severity: none
+domain: outlook.cloud.microsoft
+notes: >
+  An ordinary internal email in Microsoft 365 Outlook on outlook.cloud.microsoft — Microsoft's
+  own work/school mail host since the Nov 2025 migration. Its "microsoft" host label used to
+  read as Microsoft impersonation (tld-impersonation, RED) on real Outlook; Microsoft's
+  canonical list now includes its .microsoft brand TLD. Also exercises the name-only sender
+  (no address shown for same-organisation mail), where the sender rule abstains.
+source: synthetic — authored for the webmail rules (OWA DOM per TMetric / aziru / defluff)
+captured_at: 2026-10-21

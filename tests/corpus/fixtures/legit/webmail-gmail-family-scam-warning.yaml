@@ -1,0 +1,11 @@
+id: webmail-gmail-family-scam-warning
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A family member's warning, from a personal Gmail address, that quotes what the scammer said
+  ("do not tell anyone", "gift cards only"). The pressure rule's sentence-local guard skips a
+  match in a sentence that reports someone saying it ("The man said…"). Before the guard this drew
+  scam-language-pressure. The sender is synthetic (a ".0142" local part on gmail.com).
+source: synthetic — authored for the pressure-rule scam-report guard
+captured_at: 2026-10-21

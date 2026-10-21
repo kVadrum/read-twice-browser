@@ -1,0 +1,12 @@
+id: webmail-gmail-spam-folder-list
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  Gmail's spam folder LIST with scam subject lines (urgency, gift-card and fake-support
+  phrases, a 555 number) and no email open, plus a hidden cached thread view of a scam the
+  user already left. Before webmail mode the content rules judged this whole page and drew a
+  RED banner on Gmail itself; now they judge only the open email — none here — so the page
+  stays silent. Also pins visibility filtering: the hidden cached view is never read.
+source: synthetic — authored for the webmail rules (inbox-row markup per InboxSDK's fixtures)
+captured_at: 2026-10-21

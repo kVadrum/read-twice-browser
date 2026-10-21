@@ -6,9 +6,17 @@ import pkg from '../package.json';
 // deliberately minimal (architecture §7): storage, activeTab, scripting only, plus
 // a single outbound host for RDAP. No tabs, no cookies, no webRequest.
 //
-// NOTE: redirect-chain tracking (`redirect-chain-long`) wants `chrome.webNavigation`,
-// which is NOT requested here on purpose — adding a sensitive permission is an operator
-// decision, not a scaffold default. navigation.ts degrades gracefully without it.
+// webNavigation is NOT requested, in any form (operator decision, 2026-10-21), so
+// `redirect-chain-long` stays dormant: built, tested, never fed (background/navigation.ts).
+// Basis, checked against Chromium source: webNavigation has no per-redirect event. For a
+// server redirect it fires onBeforeNavigate for the start URL and onCommitted for the final
+// one, flagged 'server_redirect' (Chromium test api_test/webnavigation/serverRedirect, one
+// hop) — so a multi-hop chain's middle hops are, by that event model, never reported, and the
+// rule's trigger ("3 or more hops", "{N} redirects") can't be computed from it. Only webRequest.onBeforeRedirect sees each hop, and webRequest is
+// excluded above (permissions-and-privacy §2.2). The permission would buy nothing and still
+// cost something: Chrome folds its warning into the all-sites one the content script
+// already triggers (chrome_permission_message_rules.cc), but Firefox adds a prompt line.
+// navigation.test.ts fails if either permission appears here, required or optional.
 export default defineManifest({
   manifest_version: 3,
   name: 'Read Twice',

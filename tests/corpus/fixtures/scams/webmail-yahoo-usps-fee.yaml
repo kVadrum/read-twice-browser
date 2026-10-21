@@ -1,0 +1,17 @@
+id: webmail-yahoo-usps-fee
+label: scam
+expected_severity: yellow
+expected_rules:
+  - government-impersonation
+  - sender-domain-mismatch
+domain: mail.yahoo.com
+notes: >
+  USPS "redelivery fee" email in Yahoo Mail. In webmail mode the content rules judge the open
+  email's body: "USPS" + a pay CTA ("Pay the fee") from a sender off usps.com is
+  government-impersonation, and the "USPS Delivery" display name from usps-redelivery.example
+  adds sender-domain-mismatch as a second evidence line. Yellow, not the red the same text draws
+  on a web page: webmail mode caps every hit at yellow until a legit-email corpus calibrates it
+  (engine.ts), and the banner uses the rules' email copy.
+  Exercises the Yahoo adapter (data-test-id hooks, address from the pill's title).
+source: synthetic — authored for the webmail rules (Yahoo DOM per Trocker 2026-01 / Mailvelope)
+captured_at: 2026-10-21

@@ -1,0 +1,16 @@
+id: webmail-gmail-retailer-applecare-order
+label: legit
+expected_severity: yellow
+expected_rules:
+  - tech-support-impersonation
+domain: mail.google.com
+notes: >
+  A Best Buy order confirmation listing an AppleCare+ plan and Best Buy's own number
+  (1-888-BEST-BUY, its real corporate line). tech-support-impersonation fires: "AppleCare" is an
+  Apple support phrase near the top of a short email, any phone number counts, and the sender is
+  not Apple. A DOCUMENTED yellow false positive: webmail mode caps every hit at yellow (engine.ts)
+  until a legit-email corpus calibrates the red rules; before the cap this was red. No cheap
+  rule-level guard separates a retailer's plan line from a fake support claim without costing
+  recall, so it stays a yellow and counts toward the legit yellow-FP rate.
+source: synthetic — authored for the webmail severity cap (shape of a retailer order email)
+captured_at: 2026-10-21

@@ -1,6 +1,6 @@
 {
   "name": "read-twice-browser",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:fixtures": "vitest run --config vitest.fixtures.config.ts",
+    "test:golden": "playwright test",
     "gen:icons": "node scripts/gen-icons.mjs"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.7.0",
+    "@playwright/test": "1.63.0",
     "@types/chrome": "^0.2.0",
     "@types/jsdom": "^28.0.3",
     "@types/node": "^24.0.0",

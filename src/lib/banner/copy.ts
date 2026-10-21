@@ -1,4 +1,4 @@
-import type { RuleCopy } from '../heuristics/rule-types';
+import type { RuleCopy, Verdict } from '../heuristics/rule-types';
 
 // Read Twice voice copy, one block per rule. Transcribed verbatim from the voice
 // IP (heuristic-ruleset §3 + banner-ux-and-copy §4). This is the interim home;
@@ -79,6 +79,77 @@ export const COPY: Record<string, RuleCopy> = {
     action: "If you weren't expecting this email, don't reply.",
   },
 };
+
+// Email variants, for a verdict on the email open in a webmail client (Verdict.surface). The
+// rules that can read an email body keep their web copy everywhere else, but over an email
+// "This page…" points at the mail client, and "Close this tab" closes the mailbox while the
+// email stays in the inbox — the instruction that matters is not to call, click or reply.
+// Webmail mode caps every hit at yellow (engine.ts), so these are written in the yellow tone
+// (banner-ux-and-copy §3.5): the friend who noticed something, never "almost certainly".
+// Rules missing here (the webmail rules) already speak of the email.
+export const EMAIL_COPY: Record<string, RuleCopy> = {
+  'phone-number-impersonation': {
+    headline: "This email lists a {brand} support number that isn't {brand}'s real one.",
+    evidence: 'This email shows a phone number for {brand}, but the real {brand} support number is {canonical}.',
+    action: 'If you need {brand}, call the number on their official website, not the one in this email.',
+  },
+  'scam-language-urgent': {
+    headline: 'This email is using urgency to pressure you.',
+    evidence: 'This email uses the phrase "{matchedPhrase}", which is common in scams.',
+    action: 'Real companies rarely create urgency like this. Slow down.',
+  },
+  'scam-language-pressure': {
+    headline: 'This email sounds like a scam.',
+    evidence: 'This email says "{matchedPhrase}" — something scammers say and real companies don\'t.',
+    action: "Don't call, click or reply — and if you've already sent them anything, call your bank.",
+  },
+  'tech-support-impersonation': {
+    headline: "This email talks about {brand} support, but it isn't from {brand}.",
+    evidence: "This email names {brand} support and lists a phone number, but it doesn't come from {brand}'s real email address.",
+    action: 'If you need help with {brand}, go to their official website instead of calling a number in this email.',
+  },
+  'government-impersonation': {
+    headline: 'This email uses the {agency} name and asks for a payment.',
+    evidence: "This email mentions {agency}, but it doesn't come from {agency}'s real email address.",
+    action: "The real {agency} doesn't collect payments through emails like this — don't click or reply, and you can delete it.",
+  },
+};
+
+/** A rule's copy for the surface a verdict judged: its email variant over an email, if it has
+ *  one, else its web copy. */
+export function copyFor(ruleId: string, surface?: Verdict['surface']): RuleCopy | undefined {
+  return (surface === 'email' ? EMAIL_COPY[ruleId] : undefined) ?? COPY[ruleId];
+}
+
+/** Every line of text the banner shows for a verdict. */
+export interface BannerText {
+  headline: string;
+  /** One line per contributing rule that has evidence copy, in hit order. */
+  evidence: string[];
+  action: string | null;
+  /** The ×'s accessible name: it silences what the dismissal key names (content/dismiss.ts) —
+   *  the site, or in webmail mode the email's sender. */
+  closeLabel: string;
+}
+
+/** The banner's text for a verdict (banner-ux-and-copy §2.4). Hits arrive red-first from the
+ *  engine; the headline and action come from the strongest hit that actually carries them
+ *  (modifier rules have empty headlines). */
+export function bannerText(verdict: Verdict): BannerText {
+  const copy = (ruleId: string) => copyFor(ruleId, verdict.surface);
+  const hits = verdict.hits;
+  const headlineHit = hits.find((h) => copy(h.ruleId)?.headline) ?? hits[0];
+  const actionHit = hits.find((h) => copy(h.ruleId)?.action);
+  return {
+    headline: headlineHit ? fillTemplate(copy(headlineHit.ruleId)?.headline ?? '', headlineHit.vars) : '',
+    evidence: hits.flatMap((h) => {
+      const evidence = copy(h.ruleId)?.evidence;
+      return evidence ? [fillTemplate(evidence, h.vars)] : [];
+    }),
+    action: actionHit ? fillTemplate(copy(actionHit.ruleId)!.action, actionHit.vars) : null,
+    closeLabel: verdict.surface === 'email' ? 'Hide this for this sender' : 'Hide this for this site',
+  };
+}
 
 /** Fills `{key}` placeholders in a template from a flat string map. Unknown keys are left as-is. */
 export function fillTemplate(template: string, vars: Record<string, string>): string {

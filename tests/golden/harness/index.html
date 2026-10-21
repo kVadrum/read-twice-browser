@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The page follows the emulated OS scheme, like any dark-mode-aware site; that is how
+         the lane gets its light and dark page backgrounds (testing-strategy §5). -->
+    <meta name="color-scheme" content="light dark" />
+    <title>Read Twice banner harness</title>
+    <style>
+      /* A plain stand-in for "some site" under the banner: ordinary site chrome at the very
+         top, so the shot shows the page pushed down rather than covered (banner-ux-and-copy
+         §2.1), and inherited type settings of its own, which the banner must not pick up.
+         System fonts only — the lane runs offline. */
+      :root {
+        --page-bg: #ffffff;
+        --page-chrome: #eef2f6;
+        --page-rule: #d5dde6;
+        --page-ink: #1e2a36;
+        --page-muted: #566575;
+        --page-link: #1d5c96;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --page-bg: #15191e;
+          --page-chrome: #1d232a;
+          --page-rule: #2f3a45;
+          --page-ink: #e2e7ec;
+          --page-muted: #9aa7b4;
+          --page-link: #86bdec;
+        }
+      }
+      html {
+        background: var(--page-bg);
+        color: var(--page-ink);
+        font: 16px/1.6 system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      .site {
+        display: flex;
+        align-items: baseline;
+        gap: 28px;
+        padding: 14px 32px;
+        background: var(--page-chrome);
+        border-bottom: 1px solid var(--page-rule);
+      }
+      .site strong {
+        font-size: 17px;
+        margin-right: auto;
+      }
+      .site a {
+        color: var(--page-link);
+        text-decoration: none;
+      }
+      main {
+        max-width: 640px;
+        padding: 28px 32px 48px;
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: 28px;
+        line-height: 1.25;
+      }
+      .due {
+        margin: 0 0 22px;
+        color: var(--page-muted);
+      }
+      dl {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 8px 32px;
+        margin: 0 0 22px;
+        padding: 18px 0;
+        border-block: 1px solid var(--page-rule);
+      }
+      dt {
+        color: var(--page-muted);
+      }
+      dd {
+        margin: 0;
+      }
+      p {
+        margin: 0 0 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <strong>Northgate Supply Co.</strong>
+      <a href="#orders">Orders</a>
+      <a href="#invoices">Invoices</a>
+      <a href="#help">Help</a>
+    </header>
+    <main>
+      <h1>Invoice 0412</h1>
+      <p class="due">Due 14 November for October deliveries.</p>
+      <dl>
+        <dt>Amount due</dt>
+        <dd>$1,284.00</dd>
+        <dt>Account</dt>
+        <dd>Riverside Dental Group</dd>
+        <dt>Pay by</dt>
+        <dd>Card or bank transfer</dd>
+      </dl>
+      <p>Pay by card below, or reply to your account manager if the amount looks wrong.</p>
+      <p>Card payments clear the same day. Bank transfers can take up to three business days to show on your account.</p>
+    </main>
+    <script type="module" src="./harness.ts"></script>
+  </body>
+</html>

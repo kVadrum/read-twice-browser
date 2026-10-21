@@ -1,0 +1,12 @@
+id: webmail-gmail-news-quoted-number
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  The webmail twin of news-apnews-scam-number: a news newsletter from newsletters@apnews.com
+  quoting a scam caller's callback number beside "Amazon customer service", with no scam word
+  within 200 chars of the number. In webmail mode the newsletter's sender is its origin, so the
+  phone rule's news allow-list holds there too. Before that fix this drew a red in Gmail that
+  apnews.com never gets.
+source: synthetic — authored for the webmail phone-origin fix (text written for the corpus)
+captured_at: 2026-10-21

@@ -1,5 +1,6 @@
 // IndexedDB schema + migrations (architecture §3, data-model 07). Local-only.
-// Stores: dismissals (per-host hash + TTL), rdap-cache (per-host, 30d), feedback-queue (opt-in).
+// Stores: dismissals (hashed per-site or per-sender key + TTL, dismissals.ts), rdap-cache
+// (per-domain, 30d), feedback-queue (opt-in).
 //
 // Skeleton: opens/creates the object stores. Read/write helpers live in the
 // per-store modules (dismissals.ts) and rdap/cache.ts.

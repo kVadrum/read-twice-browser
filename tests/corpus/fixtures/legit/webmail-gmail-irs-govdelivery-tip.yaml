@@ -1,0 +1,16 @@
+id: webmail-gmail-irs-govdelivery-tip
+label: legit
+expected_severity: yellow
+expected_rules:
+  - phone-number-impersonation
+domain: mail.google.com
+notes: >
+  An IRS Tax Tip from irs@service.govdelivery.com, the exact address IRS.gov names for its
+  bulletins, with an IRS line not on the canonical-phone list (synthetic 555-01xx). A documented
+  yellow, kept on purpose: service.govdelivery.com is DMARC p=none (measured 2026-10-21), so
+  anyone can forge that From, and a sender that proves nothing never exempts (origin.ts;
+  lists.ts BrandSender.unenforcedSenders). The cost is this banner on a real bulletin quoting an
+  unlisted line, the phone rule's known false positive; webmail mode caps it at yellow. No pay
+  CTA, so government-impersonation stays out.
+source: synthetic — authored for the webmail phone-origin fix (shape of an IRS GovDelivery tip)
+captured_at: 2026-10-21

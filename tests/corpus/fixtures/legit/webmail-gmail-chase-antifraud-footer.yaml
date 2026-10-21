@@ -1,0 +1,12 @@
+id: webmail-gmail-chase-antifraud-footer
+label: legit
+expected_severity: none
+domain: mail.google.com
+notes: >
+  A genuine Chase payment alert in Gmail whose anti-fraud footer quotes a red-tier pressure phrase
+  ("Chase will never ask you to pay with gift cards…"). The phrase is advice against itself: the
+  pressure rule's sentence-local guard skips a match with a "never ask you to" cue before it in
+  the same sentence. Before the guard this drew scam-language-pressure — a red banner on the
+  identical footer on chase.com, and over this email in Gmail.
+source: synthetic — authored for the pressure-rule advice guard (shape of a bank alert footer)
+captured_at: 2026-10-21

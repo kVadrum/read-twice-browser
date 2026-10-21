@@ -4,10 +4,12 @@ import { ELEVATED_TLDS, BRAND_IMPERSONATION } from '../ruleset/lists';
 import { tldOf, isOnDomain, hostHasBrandToken } from './match';
 import { isMixedScriptHost, decodeHost } from './homoglyph';
 
-// URL / domain-shape rules (heuristic-ruleset §3.1).
-// `domain-age-young` is implemented as the reference rule that exercises the whole
-// pipeline end-to-end; the remaining three are skeletons (return null) pending the
-// v0.1 engine pass (handoff §7 step 3) and the lists they read from the companion repo.
+// URL / domain-shape rules (heuristic-ruleset §3.1). All four are live; their lists sit
+// in ruleset/lists.ts until the companion repo exists. The three host-shape rules read the
+// page's FULL hostname (PageFeatures.host) and reduce it with match.ts where they need the
+// public suffix.
+// `domain-age-young` fires only once the RDAP lookup is wired (lib/rdap/client.ts); until
+// then the worker's context carries no domain age and the rule stays silent.
 
 const DOMAIN_AGE_THRESHOLD_DAYS = 90;
 
